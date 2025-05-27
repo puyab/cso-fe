@@ -30,27 +30,14 @@ function selectDate(year, month, day) {
     if (events) {
         events.forEach(event => event.classList.toggle("active-event"));
     }
-
     const id = `${year}-${month}-${day}`;
-
     const selectedDateElement = document.getElementById(id);
     selectedDateElement.classList.toggle("active-event");
-    // Get the selected date
-    const selectedDate = new Date(year, month, day);
-    // Get the current date
-
-    // Format the date as "YYYY-MM-DD"
-    const formattedDate = selectedDate.toISOString().split('T')[0];
-
-    // Log the selected date
-    // alert(formattedDate);
     // ..calendar-events
     const calendarEvents = document.querySelector('.calendar-events');
     if (calendarEvents) {
         calendarEvents.style.display = 'flex';
     }
-
-    
 };
 // Function to generate the calendar
 const manipulate = () => {

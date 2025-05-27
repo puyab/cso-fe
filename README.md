@@ -9,3 +9,23 @@ git push
 git tag 1.0.2 
 git push origin --tags  
 ```
+
+```html
+    <link rel="stylesheet" 
+      href="https://cdn.jsdelivr.net/gh/sajadweb/cso-ui@main/dist/1.0.1/csoeventi-ui-style.min.css">
+
+      <div id="csoeventi-ui"></div>
+       <script src="https://cdn.jsdelivr.net/gh/sajadweb/cso-ui@main/dist/1.0.1/csoeventi-ui.min.js"></script>
+  <script>
+     window?.addEventListener("load", function () {
+   CsoeventiUi.init({
+    version: 'latest',
+    debug: true,
+    id:"csoeventi-ui",
+    siteKey: 'VOSxaOmK-2025-NlQF-XRPe-0117175813311',
+    // سایر تنظیمات
+  });
+});
+  </script>
+
+```
