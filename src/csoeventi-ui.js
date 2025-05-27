@@ -142,18 +142,19 @@ class CsoeventiUi {
     // this.app = init?.data;
   }
   async callApi({ method = 'GET', url, date, }) {
-    debugger
+
     this.log('siteKey',  this.config.sitekey)
     try {
       const response = await fetch(`${this.apiUrl}/${url}`, {
         method,
         headers: {
           'accept': '*/*',
+          'Content-Type': 'application/json',
           'site-key': this.config.sitekey
         },
         body: date ? JSON.stringify(date) : ''
       });
-      return (await response.json())?.data;
+      return (await response.json());
     } catch (error) {
       return null;
     }
@@ -180,13 +181,17 @@ class CsoeventiUi {
             duration: 60 
           }
         });
+        console.log('response', response);
         if (response) {
           alert('Event scheduled successfully!');
           backBtn();
         } else {
           alert('Error scheduling event. Please try again later.');
         }
-      } catch (error) { }
+      } catch (error) { 
+        alert('An error occurred while scheduling the event. Please try again later.');
+      }
+
     });
 
     const prenexIcons = document
