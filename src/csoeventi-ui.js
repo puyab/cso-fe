@@ -4,8 +4,6 @@ class CsoeventiUi {
     const instance = new CsoeventiUi(config);
 
     (async () => {
-      await instance.setupEvents();
-      // await instance.checkAuth();
       instance.render();
     })()
     return instance;
@@ -41,7 +39,32 @@ class CsoeventiUi {
       console.log('CsoeventiUi', str)
     }
   }
+  // renderSuccess
+  renderSuccess() {
 
+    document.getElementById(this.id).innerHTML = `
+         <div class="calendar-info">
+            <span class="icon-back" id="backBtn" style="display:block;">
+                <span class="material-symbols-rounded">arrow_back</span>
+            </span>
+            
+            <div class="specialist-title">Specialist CSO</div>
+            <div class="calendar-success" style="display:block;">
+              <div class="calendar-success-icon">
+                <span class="material-symbols-rounded" style="font-size:48px;color:#4caf50;">check_circle</span>
+              </div>
+              <div class="calendar-success-title" style="font-size:1.3em;font-weight:bold;margin-top:10px;">
+                Event scheduled successfully!
+              </div>
+              <div class="calendar-success-desc" style="margin-top:8px;">
+                Thank you for booking your appointment. A confirmation email has been sent.
+              </div>
+            </div>
+
+        </div> 
+      `;
+    this.addEventListeners();
+  }
   render() {
 
     document.getElementById(this.id).innerHTML = `
@@ -119,13 +142,8 @@ class CsoeventiUi {
                     <div class="calendar-form-desc" style="margin-top:18px;">
                         Please share anything that will help prepare for our meeting.
                     </div>
-                    <textarea class="calendar-form-textarea" id="notes" name="notes" rows="3"></textarea>
+                    <textarea class="calendar-form-textarea" id="description" name="description" rows="3"></textarea>
 
-                    <div class="calendar-form-terms">
-                        By proceeding, you confirm that you have read and agree to
-                        <a href="#" target="_blank">Calendly's Terms of Use</a> and
-                        <a href="#" target="_blank">Privacy Notice</a>.
-                    </div>
                     <button type="submit" class="calendar-form-submit">Schedule Event</button>
                 </form>
             </div>
@@ -136,14 +154,10 @@ class CsoeventiUi {
     this.loadCalendar();
     this.addEventListeners();
   }
-  async setupEvents() {
-    // const init = await this.loadConfig();
-    // this.log(init)
-    // this.app = init?.data;
-  }
+
   async callApi({ method = 'GET', url, date, }) {
 
-    this.log('siteKey',  this.config.sitekey)
+    this.log('siteKey', this.config.sitekey)
     try {
       const response = await fetch(`${this.apiUrl}/${url}`, {
         method,
@@ -161,78 +175,83 @@ class CsoeventiUi {
   }
 
   addEventListeners() {
-
-    document.querySelector('#form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target.closest('form'));
-      const data = Object.fromEntries(formData);
-      console.log(data);
-      try {
-        const nameParts = (data.name || '').trim().split(' ');
-        const firstName = nameParts[0] || '';
-        const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
-        const response = await this.callApi({
-          method: 'POST',
-          url: 'appointments',
-          date: { 
-            ...data, 
-            firstName,
-            lastName,
-            duration: 60 
+    const form = document.querySelector('#form');
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target.closest('form'));
+        const data = Object.fromEntries(formData);
+        try {
+          const nameParts = (data.name || '').trim().split(' ');
+          const firstName = nameParts[0] || '';
+          const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+          const response = await this.callApi({
+            method: 'POST',
+            url: 'appointments',
+            date: {
+              ...data,
+              firstName,
+              lastName,
+              duration: 60
+            }
+          });
+          console.log('response addEventListeners', response);
+          if (response && response?._id) {
+            //alert('Event scheduled successfully!');
+            return this.renderSuccess();
+          } else {
+            alert('Error scheduling event. Please try again later.');
           }
-        });
-        console.log('response', response);
-        if (response) {
-          alert('Event scheduled successfully!');
-          backBtn();
-        } else {
-          alert('Error scheduling event. Please try again later.');
+        } catch (error) {
+          alert('An error occurred while scheduling the event. Please try again later.');
         }
-      } catch (error) { 
-        alert('An error occurred while scheduling the event. Please try again later.');
-      }
-
-    });
-
+      });
+    }
     const prenexIcons = document
       .querySelectorAll(".calendar-navigation span");
-    prenexIcons.forEach(icon => {
+    if (prenexIcons && prenexIcons.length > 0) {
+      prenexIcons.forEach(icon => {
 
-      // When an icon is clicked
-      icon.addEventListener("click", () => {
+        // When an icon is clicked
+        icon.addEventListener("click", () => {
 
-        // Check if the icon is "calendar-prev"
-        // or "calendar-next"
-        this.month = icon.id === "calendar-prev" ? this.month - 1 : this.month + 1;
+          // Check if the icon is "calendar-prev"
+          // or "calendar-next"
+          this.month = icon.id === "calendar-prev" ? this.month - 1 : this.month + 1;
 
-        // Check if the month is out of range
-        if (this.month < 0 || this.month > 11) {
+          // Check if the month is out of range
+          if (this.month < 0 || this.month > 11) {
 
-          // Set the date to the first day of the 
-          // month with the new year
-          this.date = new Date(this.year, this.month, new Date().getDate());
+            // Set the date to the first day of the 
+            // month with the new year
+            this.date = new Date(this.year, this.month, new Date().getDate());
 
-          // Set the year to the new year
-          this.year = date.getFullYear();
+            // Set the year to the new year
+            this.year = date.getFullYear();
 
-          // Set the month to the new month
-          this.month = date.getMonth();
-        }
+            // Set the month to the new month
+            this.month = date.getMonth();
+          }
 
-        else {
+          else {
 
-          // Set the date to the current date
-          this.date = new Date();
-        }
+            // Set the date to the current date
+            this.date = new Date();
+          }
 
-        // Call the manipulate function to 
-        // update the calendar display
-        this.loadCalendar();
+          // Call the manipulate function to 
+          // update the calendar display
+          this.loadCalendar();
+        });
       });
-    });
-
+    }
+    const backBtnEl = document.getElementById('backBtn');
+    if (backBtnEl) {
+      backBtnEl.addEventListener('click', () => {
+        this.render();
+      });
+    }
   }
-
   async loadCalendar() {
     const day = document.querySelector(".calendar-dates");
     const currdate = document
@@ -287,6 +306,19 @@ class CsoeventiUi {
   }
 }
 function selectDate(year, month, day) {
+  const selectedDate = new Date(year, month, day);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  selectedDate.setHours(0, 0, 0, 0);
+
+  if (selectedDate < today) {
+    alert('You cannot schedule a meeting in the past.');
+    return;
+  }
+  if (selectedDate.getDay() === 0 || selectedDate.getDay() === 6) {
+    alert('You cannot schedule a meeting on Saturday or Sunday.');
+    return;
+  }
   // alert(`Selected date: ${year}-${month}-${day}`);
   const events = document.querySelectorAll('.active-event');
   if (events) {
@@ -403,8 +435,8 @@ function sctNextBtn(year, month, day, id) {
     if (period.toLowerCase() === 'am' && hour === 12) hour = 0;
     //2025-05-29T11:30:00.000Z
     timeInput.value = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00.000Z`;
-   }
-   
+  }
+
   //update information in left side
   //.calendar
   const calendar = document.querySelector('.calendar');
@@ -435,6 +467,10 @@ function backBtn() {
   const back = document.querySelector('.icon-back');
   if (back) {
     back.style.display = 'none';
+  }
+  const form = document.getElementById('form');
+  if (form) {
+    form.reset();
   }
 }
 
