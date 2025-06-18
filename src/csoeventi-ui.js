@@ -8,7 +8,6 @@ class CsoeventiUi {
     })()
     return instance;
   }
-
   constructor(config) {
     this.config = config;
     this.isOpen = false;
@@ -40,12 +39,22 @@ class CsoeventiUi {
     }
   }
   // renderSuccess
+  // render() {
   renderSuccess() {
 
     document.getElementById(this.id).innerHTML = `
          <div class="calendar-info">
             <span class="icon-back" id="backBtn" style="display:block;">
-                <span class="material-symbols-rounded">arrow_back</span>
+                <svg
+      
+      width="34"
+      height="34"
+      viewBox="0 0 24 24"
+      fill="#0074ff"
+    >
+      <path d="M7.138 11.862c.26.26.26.682 0 .943s-.682.26-.943 0L2.334 8.943c-.521-.521-.521-1.365 0-1.886l3.862-3.862c.26-.26.682-.26.943 0s.26.682 0 .943L3.943 7.333h9.39c.368 0 .667.298.667.667s-.298.667-.667.667h-9.39l3.195 3.195z"
+    ></path>
+    </svg>
             </span>
             
             <div class="specialist-title">Specialist CSO</div>
@@ -70,7 +79,15 @@ class CsoeventiUi {
     document.getElementById(this.id).innerHTML = `
          <div class="calendar-info">
             <span class="icon-back" onclick="backBtn()">
-                <span class="material-symbols-rounded">arrow_back</span>
+                <svg
+      
+      width="34"
+      height="34"
+      viewBox="0 0 24 24"
+      fill="#0074ff"
+    >
+      <path d="M7.138 11.862c.26.26.26.682 0 .943s-.682.26-.943 0L2.334 8.943c-.521-.521-.521-1.365 0-1.886l3.862-3.862c.26-.26.682-.26.943 0s.26.682 0 .943L3.943 7.333h9.39c.368 0 .667.298.667.667s-.298.667-.667.667h-9.39l3.195 3.195z"
+    ></path>
             </span>
             
             <div class="specialist-title">Specialist CSO</div>
@@ -144,7 +161,7 @@ class CsoeventiUi {
                     </div>
                     <textarea class="calendar-form-textarea" id="description" name="description" rows="3"></textarea>
 
-                    <button type="submit" class="calendar-form-submit">Schedule Event</button>
+                    <button type="submit" class="calendar-form-submit" id="scheduleevent">Schedule Event</button>
                 </form>
             </div>
         </div>
@@ -154,7 +171,16 @@ class CsoeventiUi {
     this.loadCalendar();
     this.addEventListeners();
   }
-
+  show() {
+    const loading = document.getElementById('scheduleevent');
+    if(loading)
+    loading.className = 'calendar-form-submit loading'
+  }
+  hide() {
+    const loading = document.getElementById('scheduleevent');
+    if(loading)
+    loading.className = 'calendar-form-submit'
+  }
   async callApi({ method = 'GET', url, date, }) {
 
     try {
@@ -181,6 +207,7 @@ class CsoeventiUi {
         const formData = new FormData(e.target.closest('form'));
         const data = Object.fromEntries(formData);
         try {
+           this.show();
           const nameParts = (data.name || '').trim().split(' ');
           const firstName = nameParts[0] || '';
           const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
@@ -194,7 +221,7 @@ class CsoeventiUi {
               duration: 60
             }
           });
-          console.log('response addEventListeners', response);
+          this.hide();
           if (response && response?._id) {
             //alert('Event scheduled successfully!');
             return this.renderSuccess();
@@ -202,6 +229,7 @@ class CsoeventiUi {
             alert('Error scheduling event. Please try again later.');
           }
         } catch (error) {
+          this.hide();
           alert('An error occurred while scheduling the event. Please try again later.');
         }
       });

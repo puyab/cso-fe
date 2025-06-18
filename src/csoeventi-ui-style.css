@@ -1,6 +1,6 @@
 /* CSS for the CSO Eventi UI */
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
-@import url('https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;600&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;600&display=swap'); */
 :root {
   --primary-color: #2563eb;
   --secondary-color: #1e40af;
@@ -389,6 +389,7 @@ header .calendar-current-date {
 }
 
 .calendar-form-submit {
+    position: relative; 
     display: inline-block;
     background: #0074ff;
     color: #fff;
@@ -399,13 +400,42 @@ header .calendar-current-date {
     padding: 14px 38px;
     cursor: pointer;
     margin-top: 8px;
-    transition: background 0.2s;
+    transition: 
+        background 0.2s,
+        color 0.2s; 
 }
 
 .calendar-form-submit:hover {
     background: #005ed6;
 }
 
+
+.calendar-form-submit.loading {
+    color: transparent; 
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+
+.calendar-form-submit.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px; 
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
 .icon-back {
     display: none;
     color: blue; 
@@ -419,7 +449,9 @@ header .calendar-current-date {
     height: 24px;
     margin-bottom: 12px;
 }
-
+.icon-back > svg{
+    cursor: pointer;
+}
 .calendar-events{
     display: none   ;
 }

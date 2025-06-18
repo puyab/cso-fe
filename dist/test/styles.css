@@ -423,3 +423,52 @@ header .calendar-current-date {
 .calendar-events{
     display: none   ;
 }
+
+.calendar-form-submit {
+    position: relative; /* برای قرارگیری صحیح عنصر شبه */
+    display: inline-block;
+    background: #0074ff;
+    color: #fff;
+    border: none;
+    border-radius: 28px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 14px 38px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: 
+        background 0.2s,
+        color 0.2s; /* افزودن transition برای رنگ متن */
+}
+
+.calendar-form-submit:hover {
+    background: #005ed6;
+}
+/* حالت لودینگ */
+.calendar-form-submit.loading {
+    color: transparent; /* مخفی کردن متن */
+    cursor: not-allowed; /* تغییر نشانگر موس */
+    pointer-events: none; /* غیرفعال کردن کلیک */
+}
+
+/* ایجاد اسپینر لودینگ */
+.calendar-form-submit.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px; /* تنظیم مرکز اسپینر */
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s linear infinite;
+}
+
+/* انیمیشن چرخش */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
