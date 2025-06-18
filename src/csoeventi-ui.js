@@ -15,7 +15,7 @@ class CsoeventiUi {
     this.user = null;
     // window.document['sitekey'] = config.sitekey;
     this.id = config?.id || 'csoeventi-ui';
-    this.apiUrl = config?.apiUrl || 'http://api-cso.zagrosagency.xyz';
+    this.apiUrl = 'https://api-cso.zagrosagency.xyz';
     this.date = new Date();
     this.year = this.date.getFullYear();
     this.month = this.date.getMonth();
@@ -157,7 +157,6 @@ class CsoeventiUi {
 
   async callApi({ method = 'GET', url, date, }) {
 
-    this.log('siteKey', this.config.sitekey)
     try {
       const response = await fetch(`${this.apiUrl}/${url}`, {
         method,
