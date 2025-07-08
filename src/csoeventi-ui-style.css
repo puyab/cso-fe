@@ -443,7 +443,7 @@ header .calendar-current-date {
     font-size: 1.5rem;
     padding: 4px;
     border-radius: 50%;
-    border: 1px solid #cbcfd4;
+    /* border: 1px solid #cbcfd4; */
     cursor: pointer;
     width: 24px;
     height: 24px;
@@ -451,6 +451,7 @@ header .calendar-current-date {
 }
 .icon-back > svg{
     cursor: pointer;
+    /* border: 1px solid #cbcfd4; */
 }
 .calendar-events{
     display: none   ;

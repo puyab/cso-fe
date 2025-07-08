@@ -74,6 +74,7 @@ class CsoeventiUi {
       `;
     this.addEventListeners();
   }
+  // render2() {
   render() {
 
     document.getElementById(this.id).innerHTML = `
