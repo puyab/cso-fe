@@ -89,16 +89,27 @@ class CsoeventiUi {
     >
       <path d="M7.138 11.862c.26.26.26.682 0 .943s-.682.26-.943 0L2.334 8.943c-.521-.521-.521-1.365 0-1.886l3.862-3.862c.26-.26.682-.26.943 0s.26.682 0 .943L3.943 7.333h9.39c.368 0 .667.298.667.667s-.298.667-.667.667h-9.39l3.195 3.195z"
     ></path>
+
             </span>
             
             <div class="specialist-title">Specialist CSO</div>
             <h1 class="main-title">Book an appointment with one of our product specialists</h1>
             <div class="info-row">
-                <span class="material-symbols-rounded icon">schedule</span>
+               <span class="icon-schedule" style="margin-right:8px;">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+       xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <path d="M12 8v5h5v-2h-3V8h-2zm0-6C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
+  </svg>
+</span>
                 <span class="info-text">1 hr</span>
             </div>
             <div class="info-row">
-                <span class="material-symbols-rounded icon">videocam</span>
+               <span class="icon-videocam" style="margin-right:8px;">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+       xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <path d="M17 10.5V7c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-3.5l4 4v-11l-4 4z" fill="currentColor"/>
+  </svg>
+</span>
                 <span class="info-text bold">Web conferencing details provided upon confirmation.</span>
             </div>
             <p class="description">
@@ -112,12 +123,18 @@ class CsoeventiUi {
                 <header class="calendar-header">
                     <p class="calendar-current-date"></p>
                     <div class="calendar-navigation">
-                        <span id="calendar-prev" class="material-symbols-rounded">
-                            chevron_left
-                        </span>
-                        <span id="calendar-next" class="material-symbols-rounded">
-                            chevron_right
-                        </span>
+                       <span id="calendar-prev" class="calendar-chevron">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
+       xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+  </svg>
+</span>
+                        <span id="calendar-next" class="calendar-chevron">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
+       xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <path d="M8.59 7.41L10 6l6 6-6 6-1.41-1.41L13.17 12z" fill="currentColor"/>
+  </svg>
+</span>
                     </div>
                 </header>
 
@@ -174,13 +191,13 @@ class CsoeventiUi {
   }
   show() {
     const loading = document.getElementById('scheduleevent');
-    if(loading)
-    loading.className = 'calendar-form-submit loading'
+    if (loading)
+      loading.className = 'calendar-form-submit loading'
   }
   hide() {
     const loading = document.getElementById('scheduleevent');
-    if(loading)
-    loading.className = 'calendar-form-submit'
+    if (loading)
+      loading.className = 'calendar-form-submit'
   }
   async callApi({ method = 'GET', url, date, }) {
 
@@ -208,7 +225,7 @@ class CsoeventiUi {
         const formData = new FormData(e.target.closest('form'));
         const data = Object.fromEntries(formData);
         try {
-           this.show();
+          this.show();
           const nameParts = (data.name || '').trim().split(' ');
           const firstName = nameParts[0] || '';
           const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';

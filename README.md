@@ -12,10 +12,10 @@ git push origin --tags
 
 ```html
     <link rel="stylesheet" 
-      href="https://cdn.jsdelivr.net/gh/puyab/cso-fe@main/dist/1.0.4/csoeventi-ui-style.min.css">
+      href="https://cdn.jsdelivr.net/gh/puyab/cso-fe@main/dist/1.0.7/csoeventi-ui-style.min.css">
 
       <div id="csoeventi-ui"></div>
-       <script src="https://cdn.jsdelivr.net/gh/puyab/cso-fe@main/dist/1.0.4/csoeventi-ui.min.js"></script>
+       <script src="https://cdn.jsdelivr.net/gh/puyab/cso-fe@main/dist/1.0.7/csoeventi-ui.min.js"></script>
   <script>
      window?.addEventListener("load", function () {
    CsoeventiUi.init({
