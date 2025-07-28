@@ -112,10 +112,18 @@ class CsoeventiUi {
 </span>
                 <span class="info-text bold">Web conferencing details provided upon confirmation.</span>
             </div>
+           
             <p class="description">
                 Choose the date and time to book an appointment with a CSO product specialist to find out in detail the
                 news and features of our products.
             </p>
+             <p class="description" style="font-weight:bold;color:#ff4400;margin-bottom:2px;">
+              Please note:
+             </p>
+             <p class="description" style="margin-top:2px;">
+             You are scheduling an appointment in the GMT+1 time zone.
+            </p> 
+
 
         </div>
         <div class="calendar">
@@ -151,13 +159,7 @@ class CsoeventiUi {
                     <ul class="calendar-dates"></ul>
                 </div>
 
- <div style="margin-left:35px;color:#8a8a8a;">
-    <label>
-      
-     TZ: Europe/Rome
-    </label>
 
- </div>
 
             </div>
             <div class="calendar-events">
