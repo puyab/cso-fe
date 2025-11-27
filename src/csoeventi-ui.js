@@ -321,6 +321,13 @@ class CsoeventiUi {
 
     // Get the last date of the previous this.month
     let monthlastdate = new Date(this.year, this.month, 0).getDate();
+    const nextWeek = new Date();
+      console.log('nextWeek',nextWeek)
+    nextWeek.setDate(nextWeek.getDate() + 7); 
+    console.log('nextWeek',nextWeek)
+    let monthNow = nextWeek.getMonth();
+    let dayNow = nextWeek.getDate();
+    let yearNow = nextWeek.getFullYear();
 
     // Variable to store the generated calendar HTML
     let lit = "";
@@ -337,6 +344,8 @@ class CsoeventiUi {
       if (i in holidays) {
         lit += `<li alt="${holidays[i].description}" class="inactive">${i}</li>`
 
+      }else if(yearNow===this.year && ((this.month<monthNow)||(this.month===monthNow && i<= dayNow))){
+          lit += `<li  class="inactive">${i}</li>`
       } else {
         // Check if the current date is today
         let isToday = new Date(this.year, this.month, i).setHours(0, 0, 0, 0) > new Date().setHours(0, 0, 0, 0)
