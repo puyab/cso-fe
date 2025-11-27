@@ -256,11 +256,12 @@ class CsoeventiUi {
             //alert('Event scheduled successfully!');
             return this.renderSuccess();
           } else {
-            alert('Error scheduling event. Please try again later.');
+            alert('Errore durante la prenotazione dell’evento. Riprova più tardi..');
           }
         } catch (error) {
           this.hide();
-          alert('An error occurred while scheduling the event. Please try again later.');
+          alert('Si è verificato un errore durante la prenotazione dell’evento. Riprova più tardi..');
+          // alert('An error occurred while scheduling the event. Please try again later.');
         }
       });
     }
@@ -384,11 +385,13 @@ async function selectDate(year, month, day) {
   selectedDate.setHours(0, 0, 0, 0);
 
   if (selectedDate < today) {
-    alert('You cannot schedule a meeting in the past.');
+    alert('Non puoi selezionare un appuntamento antecedente ad oggi');
+    // alert('You cannot schedule a meeting in the past.');
     return;
   }
   if (selectedDate.getDay() === 0 || selectedDate.getDay() === 6) {
-    alert('You cannot schedule a meeting on Saturday or Sunday.');
+    alert('Non puoi selezionare un appuntamento per i giorni Sabato o Domenica.');
+    // alert('You cannot schedule a meeting on Saturday or Sunday.');
     return;
   }
 
@@ -418,7 +421,8 @@ async function selectDate(year, month, day) {
   console.log('eventsTime', eventsTime)
   // return alert(`Selected date: ${year}-${month}-${day}`);
   if (eventsTime.length<=0) {
-    alert('Error!You cannot schedule a meeting in the past.');
+    alert('Errore durante la prenotazione dell’evento. Riprova più tardi..');
+    // alert('Error!You cannot schedule a meeting in the past.');
     return;
   }
   const calendarTimes = document.querySelector('.calendar-times');
