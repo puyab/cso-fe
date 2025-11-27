@@ -1,11 +1,13 @@
 class CsoeventiUi {
-
+  holidays = [];
   static init(config) {
     const instance = new CsoeventiUi(config);
 
     (async () => {
+
       instance.render();
     })()
+
     return instance;
   }
   constructor(config) {
@@ -14,7 +16,7 @@ class CsoeventiUi {
     this.user = null;
     // window.document['sitekey'] = config.sitekey;
     this.id = config?.id || 'csoeventi-ui';
-    this.apiUrl = 'https://api-cso.zagrosagency.xyz';
+    window['apiUrl']=this.apiUrl = config?.url || 'https://api-cso.zagrosagency.xyz';
     this.date = new Date();
     this.year = this.date.getFullYear();
     this.month = this.date.getMonth();
@@ -32,6 +34,7 @@ class CsoeventiUi {
       "November",
       "December"
     ];
+
   }
   log(...str) {
     if (this.config?.debug) {
@@ -217,10 +220,11 @@ class CsoeventiUi {
           'Content-Type': 'application/json',
           'site-key': this.config.sitekey
         },
-        body: date ? JSON.stringify(date) : ''
+        ...(date ? { body: JSON.stringify(date) } : {})
       });
       return (await response.json());
     } catch (error) {
+      console.log('error', error)
       return null;
     }
   }
@@ -267,31 +271,17 @@ class CsoeventiUi {
 
         // When an icon is clicked
         icon.addEventListener("click", () => {
-
           // Check if the icon is "calendar-prev"
           // or "calendar-next"
           this.month = icon.id === "calendar-prev" ? this.month - 1 : this.month + 1;
 
-          // Check if the month is out of range
-          if (this.month < 0 || this.month > 11) {
-
-            // Set the date to the first day of the 
-            // month with the new year
-            this.date = new Date(this.year, this.month, new Date().getDate());
-
-            // Set the year to the new year
-            this.year = date.getFullYear();
-
-            // Set the month to the new month
-            this.month = date.getMonth();
-          }
-
-          else {
-
-            // Set the date to the current date
-            this.date = new Date();
-          }
-
+          // Set the date to the first day of the 
+          // month with the new year
+          this.date = new Date(this.year, this.month, new Date().getDate());
+          // Set the year to the new year
+          this.year = this.date.getFullYear();
+          // Set the month to the new month
+          this.month = this.date.getMonth();
           // Call the manipulate function to 
           // update the calendar display
           this.loadCalendar();
@@ -306,6 +296,17 @@ class CsoeventiUi {
     }
   }
   async loadCalendar() {
+    const res = await this.callApi({
+      method: "GET",
+      'url': 'holidays?limit=365&page=1',
+      date: null,
+    });
+    const holidays = {};
+    for (const item of res?.data) {
+      const [y, m, d] = parseDate(item?.date);
+      if (y === this.year && m === this.month)
+        holidays[d] = item;
+    } 
     const day = document.querySelector(".calendar-dates");
     const currdate = document
       .querySelector(".calendar-current-date");
@@ -333,15 +334,21 @@ class CsoeventiUi {
     // Loop to add the dates of the current this.month
     for (let i = 1; i <= lastdate; i++) {
 
-      // Check if the current date is today
-      let isToday = new Date(this.year, this.month, i).setHours(0, 0, 0, 0) > new Date().setHours(0, 0, 0, 0)
-        && new Date(this.year, this.month, i).getDay() !== 0
-        && new Date(this.year, this.month, i).getDay() !== 6
-        ? "active"
-        : "";
-      lit += `<li 
-      id="${this.year}-${this.month}-${i}" 
-      class="${isToday}" onclick="selectDate(${this.year},${this.month},${i})">${i}</li>`;
+      if (i in holidays) {
+        lit += `<li alt="${holidays[i].description}" class="inactive">${i}</li>`
+
+      } else {
+        // Check if the current date is today
+        let isToday = new Date(this.year, this.month, i).setHours(0, 0, 0, 0) > new Date().setHours(0, 0, 0, 0)
+          && new Date(this.year, this.month, i).getDay() !== 0
+          && new Date(this.year, this.month, i).getDay() !== 6
+          ? "active"
+          : "";
+        lit += `<li 
+      id="${this.year}-${this.month + 1}-${i}" 
+      class="${isToday}" onclick="selectDate(${this.year},${this.month + 1},${i})">${i}</li>`;
+      }
+
     }
 
     // Loop to add the first dates of the next this.month
@@ -358,9 +365,12 @@ class CsoeventiUi {
     day.innerHTML = lit;
   }
 }
-function selectDate(year, month, day) {
-  const selectedDate = new Date(year, month, day);
+async function selectDate(year, month, day) {
+  console.log('selectDate', { year, month, day })
+  const selectedDate = new Date(year, month - 1, day);
+  console.log('selectDate', selectedDate)
   const today = new Date();
+  console.log('today', today)
   today.setHours(0, 0, 0, 0);
   selectedDate.setHours(0, 0, 0, 0);
 
@@ -372,7 +382,7 @@ function selectDate(year, month, day) {
     alert('You cannot schedule a meeting on Saturday or Sunday.');
     return;
   }
-  // alert(`Selected date: ${year}-${month}-${day}`);
+
   const events = document.querySelectorAll('.active-event');
   if (events) {
     events.forEach(event => event.classList.toggle("active-event"));
@@ -391,26 +401,21 @@ function selectDate(year, month, day) {
     const options = { weekday: 'long', month: 'long', day: 'numeric' };
     date.innerText = selectedDate.toLocaleDateString('en-US', options);
   }
-  let eventsTime = [
-    "09:00am",
-    "10:00am",
-    "11:00am",
-    "02:00pm",
-    "03:00pm",
-  ];
-  // If the selected day is Friday (5), clear eventsTime
-  if (new Date(year, month, day).getDay() === 5) {
-    eventsTime = [
-      "09:00am",
-      "10:00am",
-      "11:00am",
-      "12:00am",
-    ];
+
+  const eventsTime = await Api({
+    url: `https://api-cso.zagrosagency.xyz/appointments/eventes/${year}-${month}-${day}T${new Date().getHours()}:${new Date().getMinutes()}:00.000Z`,
+    method: "GET",
+  });
+  console.log('eventsTime', eventsTime)
+  // return alert(`Selected date: ${year}-${month}-${day}`);
+  if (eventsTime.length<=0) {
+    alert('Error!You cannot schedule a meeting in the past.');
+    return;
   }
   const calendarTimes = document.querySelector('.calendar-times');
   if (calendarTimes) {
     calendarTimes.innerHTML = `
-         ${eventsTime.map(time => `
+         ${eventsTime?.map(time => `
             <button id="btn-${time}" class="calendar-time-btn" 
             onclick="sctBtn('${time}')">
                         ${time}
@@ -527,3 +532,32 @@ function backBtn() {
   }
 }
 
+async function Api({ method = 'GET', url, date, }) {
+
+  try {
+    const response = await fetch(`${url}`, {
+      method,
+      headers: {
+        'accept': '*/*',
+        'Content-Type': 'application/json',
+        'site-key': this?.config?.sitekey || '',
+      },
+      ...(date ? { body: JSON.stringify(date) } : {})
+    });
+    return (await response.json());
+  } catch (error) {
+    console.log('error', error)
+    return null;
+  }
+}
+
+function parseDate(date) {
+  const day = new Date(date);
+  let y = day.getFullYear();
+  let m = day.getMonth();
+  let d = day.getDate();
+  let h = day.getHours();
+  let ms = day.getMinutes();
+  let s = day.getSeconds();
+  return [y, m, d, h, ms, s]
+}
