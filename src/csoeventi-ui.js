@@ -16,7 +16,7 @@ class CsoeventiUi {
     this.user = null;
     // window.document['sitekey'] = config.sitekey;
     this.id = config?.id || 'csoeventi-ui';
-    window['apiUrl']=this.apiUrl = config?.url || 'https://api-cso.zagrosagency.xyz';
+    window['apiUrl']=this.apiUrl = config?.url || 'https://api.csoeventi.com';
     this.date = new Date();
     this.year = this.date.getFullYear();
     this.month = this.date.getMonth();
@@ -299,7 +299,7 @@ class CsoeventiUi {
   async loadCalendar() {
     const res = await this.callApi({
       method: "GET",
-      'url': 'holidays?limit=365&page=1',
+      'url': 'holidays/list?limit=365&page=1',
       date: null,
     });
     const holidays = {};
@@ -415,7 +415,7 @@ async function selectDate(year, month, day) {
   }
 
   const eventsTime = await Api({
-    url: `https://api-cso.zagrosagency.xyz/appointments/eventes/${year}-${month}-${day}T${new Date().getHours()}:${new Date().getMinutes()}:00.000Z`,
+    url: `https://api.csoeventi.com/appointments/eventes/${year}-${month}-${day}T${new Date().getHours()}:${new Date().getMinutes()}:00.000Z`,
     method: "GET",
   });
   console.log('eventsTime', eventsTime)
