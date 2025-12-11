@@ -4,9 +4,9 @@
 ```sh
 npm run build
 git add .
-git commit -m "add v1.1.3"
+git commit -m "add v1.1.4"
 git push
-git tag 1.1.3
+git tag 1.1.4
 git push origin --tags  
 ```
 

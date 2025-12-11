@@ -376,11 +376,11 @@ class CsoeventiUi {
   }
 }
 async function selectDate(year, month, day) {
-  console.log('selectDate', { year, month, day })
-  const selectedDate = new Date(year, month - 1, day);
-  console.log('selectDate', selectedDate)
+  console.log('selectDate json', { year, month, day })
+  const selectedDate = new Date(year, month -1, day);
+  console.log('selectDate date', selectedDate)
   const today = new Date();
-  console.log('today', today)
+  console.log('selectDate today', today)
   today.setHours(0, 0, 0, 0);
   selectedDate.setHours(0, 0, 0, 0);
 
@@ -413,9 +413,8 @@ async function selectDate(year, month, day) {
     const options = { weekday: 'long', month: 'long', day: 'numeric' };
     date.innerText = selectedDate.toLocaleDateString('en-US', options);
   }
-
   const eventsTime = await Api({
-    url: `https://api.csoeventi.com/appointments/eventes/${year}-${month}-${day}T${new Date().getHours()}:${new Date().getMinutes()}:00.000Z`,
+    url: `${window.apiUrl}/appointments/eventes/${year}-${month}-${day}T${new Date().getHours()}:${new Date().getMinutes()}:00.000Z`,
     method: "GET",
   });
   console.log('eventsTime', eventsTime)
@@ -505,7 +504,7 @@ function sctNextBtn(year, month, day, id) {
     if (period.toLowerCase() === 'pm' && hour !== 12) hour += 12;
     if (period.toLowerCase() === 'am' && hour === 12) hour = 0;
     //2025-05-29T11:30:00.000Z
-    timeInput.value = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00.000Z`;
+    timeInput.value = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00.000Z`;
   }
 
   //update information in left side
