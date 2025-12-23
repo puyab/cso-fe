@@ -4,18 +4,18 @@
 ```sh
 npm run build
 git add .
-git commit -m "add v1.1.4"
+git commit -m "add v1.1.6"
 git push
-git tag 1.1.4
+git tag 1.1.6
 git push origin --tags  
 ```
 
 ```html
     <link rel="stylesheet" 
-      href="https://cdn.jsdelivr.net/gh/puyab/cso-fe@main/dist/1.1.4/csoeventi-ui-style.min.css">
+      href="https://cdn.jsdelivr.net/gh/puyab/cso-fe@main/dist/1.1.5/csoeventi-ui-style.min.css">
 
       <div id="csoeventi-ui"></div>
-       <script src="https://cdn.jsdelivr.net/gh/puyab/cso-fe@main/dist/1.1.4/csoeventi-ui.min.js"></script>
+       <script src="https://cdn.jsdelivr.net/gh/puyab/cso-fe@main/dist/1.1.5/csoeventi-ui.min.js"></script>
       <script>
         window?.addEventListener("load", function () {
           CsoeventiUi.init({

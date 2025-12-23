@@ -409,7 +409,7 @@ async function selectDate(year, month, day) {
   }
   const date = document.querySelector('.calendar-events-date');
   if (date) {
-    const selectedDate = new Date(year, month, day);
+    const selectedDate = new Date(year, month-1, day);
     const options = { weekday: 'long', month: 'long', day: 'numeric' };
     date.innerText = selectedDate.toLocaleDateString('en-US', options);
   }
